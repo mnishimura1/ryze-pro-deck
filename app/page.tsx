@@ -6,6 +6,7 @@ import { EffectComposer, Bloom, Vignette } from "@react-three/postprocessing";
 import { motion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
 import { CheckCircle } from "lucide-react";
+import * as THREE from "three";
 
 /* ----- 3D helpers for Slide 2 ----- */
 function Link({ from, to, color }: { from:[number,number,number]; to:[number,number,number]; color:string }) {
@@ -13,7 +14,7 @@ function Link({ from, to, color }: { from:[number,number,number]; to:[number,num
   return (
     <line>
       <bufferGeometry>
-        <bufferAttribute attach="attributes-position" array={positions} count={2} itemSize={3} />
+        <bufferAttribute attach="attributes-position" args={[positions, 3]} />
       </bufferGeometry>
       <lineBasicMaterial color={color} />
     </line>
@@ -82,7 +83,7 @@ function AdapterHub3D() {
           <pointLight position={[5,5,5]} intensity={1.2} />
           <Suspense fallback={null}>
             <PulsingCore />
-            {nodes.map((n,i)=>(<Node key={i} position={n.pos as any} color={n.color} label={n.label} />))}
+            {nodes.map((n,i)=>(<Node key={i} position={n.pos as [number,number,number]} color={n.color} label={n.label} />))}
             <EffectComposer>
               <Bloom mipmapBlur intensity={0.6} />
               <Vignette eskil={false} offset={0.2} darkness={0.6} />
