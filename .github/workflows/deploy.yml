@@ -21,4 +21,6 @@ jobs:
           aws-region: ${{ secrets.AWS_REGION }}
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      - run: aws s3 sync ./out s3://${{ secrets.S3_BUCKET }} --delete --cache-control "public,max-age=300"
+      - run: aws s3 sync ./out s3://${{ secrets.S3_BUCKET }} --delete --exact-timestamps --cache-control "public,max-age=31536000,immutable" --exclude "index.html" --exclude "service-worker.js"
+      - run: aws s3 cp ./out/index.html s3://${{ secrets.S3_BUCKET }}/index.html --cache-control "public,max-age=60,no-transform"
+      - run: aws cloudfront create-invalidation --distribution-id ${{ secrets.CF_DISTRIBUTION_ID }} --paths "/*"
