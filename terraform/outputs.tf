@@ -8,7 +8,17 @@ output "s3_website_endpoint" {
   value       = aws_s3_bucket_website_configuration.deck_bucket_website.website_endpoint
 }
 
-output "s3_website_url" {
-  description = "S3 website URL"
-  value       = "http://${aws_s3_bucket_website_configuration.deck_bucket_website.website_endpoint}"
+output "cloudfront_distribution_id" {
+  description = "CloudFront Distribution ID"
+  value       = aws_cloudfront_distribution.deck_distribution.id
+}
+
+output "cloudfront_url" {
+  description = "CloudFront HTTPS URL"
+  value       = "https://${aws_cloudfront_distribution.deck_distribution.domain_name}"
+}
+
+output "deck_url" {
+  description = "Final deck URL (HTTPS)"
+  value       = "https://${aws_cloudfront_distribution.deck_distribution.domain_name}"
 }
